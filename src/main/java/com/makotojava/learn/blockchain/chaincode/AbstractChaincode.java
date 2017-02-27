@@ -25,15 +25,15 @@ import org.hyperledger.java.shim.ChaincodeStub;
 /**
  * Abstract base class for all Chaincode in this project.
  * 
- * @author jsperry
+ * @author jstevenperry
  *
  */
 public abstract class AbstractChaincode extends ChaincodeBase {
 
   private static final Log log = LogFactory.getLog(AbstractChaincode.class);
 
-  public static final String INIT = "init";
-  public static final String QUERY = "query";
+  public static final String FUNCTION_INIT = "init";
+  public static final String FUNCTION_QUERY = "query";
 
   /**
    * Handles initializing the chaincode.
@@ -51,6 +51,9 @@ public abstract class AbstractChaincode extends ChaincodeBase {
   /**
    * Handles querying the chaincode.
    * 
+   * @param stub
+   *          The ChaincodeStub used to communicate with the Fabric
+   * 
    * @param args
    *          The arguments to pass to the function to invoke.
    * 
@@ -60,6 +63,9 @@ public abstract class AbstractChaincode extends ChaincodeBase {
 
   /**
    * Handles querying the chaincode.
+   * 
+   * @param stub
+   *          The ChaincodeStub used to communicate with the Fabric
    * 
    * @param function
    *          The function to invoke.
@@ -71,6 +77,9 @@ public abstract class AbstractChaincode extends ChaincodeBase {
    */
   protected abstract String handleOther(ChaincodeStub stub, String function, String[] args);
 
+  /**
+   * Implemented from ChaincodeBase
+   */
   @Override
   public String run(ChaincodeStub stub, String function, String[] args) {
     String ret;
@@ -78,12 +87,12 @@ public abstract class AbstractChaincode extends ChaincodeBase {
     switch (function) {
     //
     // init - initializes the chaincode. Specifics handled by subclass.
-    case INIT:
+    case FUNCTION_INIT:
       ret = handleInit(stub, args);
       break;
     //
     // query - queries the ledger. Specifics handled by subclass.
-    case QUERY:
+    case FUNCTION_QUERY:
       ret = handleQuery(stub, args);
       //
       // Not sure what this is. Delegate to child class for this.
@@ -95,6 +104,19 @@ public abstract class AbstractChaincode extends ChaincodeBase {
     //
     // Return the String to the caller
     return ret;
+  }
+
+  /**
+   * Implemented from ChaincodeBase.
+   * <br/>
+   * <b>NOTE:</b> This method may be removed from the Shim interface at
+   * some point in the future (stay tuned).
+   */
+  @Override
+  public String query(ChaincodeStub stub, String function, String[] args) {
+    //
+    // Delegate to handleQuery()
+    return handleQuery(stub, args);
   }
 
 }

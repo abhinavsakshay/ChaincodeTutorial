@@ -21,7 +21,7 @@ import org.hyperledger.java.shim.ChaincodeStub;
 
 /**
  * 
- * @author sperry
+ * @author jstevenperry
  *
  */
 public class ChaincodeLog extends AbstractChaincode {
@@ -30,7 +30,7 @@ public class ChaincodeLog extends AbstractChaincode {
 
   public static final String CONTRACT_ID = "ChaincodeLogSmartContract";
 
-  public static final String LOG = "log";
+  public static final String FUNCTION_LOG = "log";
 
   public static final String KEY_PREFIX = CONTRACT_ID + "-SC-";
 
@@ -45,31 +45,62 @@ public class ChaincodeLog extends AbstractChaincode {
     new ChaincodeLog().start(args);
   }
 
+  /**
+   * Returns the unique chaincode ID for this chaincode program.
+   */
   @Override
   public String getChaincodeID() {
     return null;
   }
 
+  /**
+   * Handles initializing this chaincode program.
+   * <br/>
+   * Caller expects this method to:
+   * <ol>
+   * <li>Use args[0] as the key for logging.</li>
+   * <li>Use args[1] as the log message.</li>
+   * <li>Return the logged message.</li>
+   * </ol>
+   */
   @Override
   protected String handleInit(ChaincodeStub stub, String[] args) {
     // TODO Auto-generated method stub
     return null;
   }
 
+  /**
+   * Handles querying the ledger.
+   * <br/>
+   * Caller expects this method to:
+   * <ol>
+   * <li>Use args[0] as the key for ledger query.</li>
+   * <li>Return the ledger value matching the specified key
+   * (which should be the message that was logged using that key).</li>
+   * </ol>
+   */
   @Override
   protected String handleQuery(ChaincodeStub stub, String[] args) {
     // TODO Auto-generated method stub
     return null;
   }
 
+  /**
+   * Handles other methods applied to the ledger.
+   * Currently, that functionality is limited to these functions:
+   * <ul>
+   * <li>log</li>
+   * </ul>
+   * <br/>
+   * Caller expects this method to:
+   * <ol>
+   * <li>Use args[0] as the key for logging.</li>
+   * <li>Use args[1] as the log message.</li>
+   * <li>Return the logged message.</li>
+   * </ol>
+   */
   @Override
   protected String handleOther(ChaincodeStub stub, String function, String[] args) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public String query(ChaincodeStub arg0, String arg1, String[] arg2) {
     // TODO Auto-generated method stub
     return null;
   }
