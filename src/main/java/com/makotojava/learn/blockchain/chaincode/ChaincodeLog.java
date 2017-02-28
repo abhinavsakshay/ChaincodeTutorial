@@ -65,7 +65,6 @@ public class ChaincodeLog extends AbstractChaincode {
    */
   @Override
   protected String handleInit(ChaincodeStub stub, String[] args) {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -81,7 +80,6 @@ public class ChaincodeLog extends AbstractChaincode {
    */
   @Override
   protected String handleQuery(ChaincodeStub stub, String[] args) {
-    // TODO Auto-generated method stub
     return null;
   }
 
