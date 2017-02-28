@@ -39,6 +39,7 @@ public class ChaincodeLogTest {
   /**
    * Fixture - the class under test: ChaincodeLog
    */
+  // private com.makotojava.learn.blockchain.chaincode.solution.ChaincodeLog classUnderTest;
   private ChaincodeLog classUnderTest;
 
   /**
@@ -58,6 +59,7 @@ public class ChaincodeLogTest {
 
   @Before
   public void setUp() throws Exception {
+    // classUnderTest = new com.makotojava.learn.blockchain.chaincode.solution.ChaincodeLog();
     classUnderTest = new ChaincodeLog();
     mockChaincodeStub = mock(ChaincodeStub.class);
 
@@ -85,13 +87,25 @@ public class ChaincodeLogTest {
   }
 
   @Test
-  public void testRun() {
+  public void testRun_init() {
     setUpMocks();
     String logMessage = "This is a test";
     String logKey = TEST_KEY_1;
     //
     // do init
     String response = doInit(logKey, logMessage);
+    // EXPECTED: logMessage
+    assertEquals(logMessage, response);
+  }
+
+  @Test
+  public void testRun_log() {
+    setUpMocks();
+    String logMessage = "This is a test";
+    String logKey = TEST_KEY_1;
+    //
+    // do init
+    String response = doLog(logKey, logMessage);
     // EXPECTED: logMessage
     assertEquals(logMessage, response);
     //
@@ -122,43 +136,27 @@ public class ChaincodeLogTest {
   }
 
   @Test
-  public void testQuery() {
+  public void testRun_query() {
     setUpMocks();
-    String[] args = {
-        TEST_KEY_1
-    };
-    String function = "query";
     //
     // Invoke query function
-    String response = classUnderTest.query(mockChaincodeStub, function, args);
+    String response = doQuery(TEST_KEY_1);
     // EXPECTED: TEST_LOG_MESSAGE_1
     assertEquals(TEST_LOG_MESSAGE_1, response);
     //
-    args = new String[] {
-        TEST_KEY_2
-    };
-    response = classUnderTest.query(mockChaincodeStub, function, args);
+    response = doQuery(TEST_KEY_2);
     // EXPECTED: TEST_LOG_MESSAGE_2
     assertEquals(TEST_LOG_MESSAGE_2, response);
     //
-    args = new String[] {
-        TEST_KEY_3
-    };
-    response = classUnderTest.query(mockChaincodeStub, function, args);
+    response = doQuery(TEST_KEY_3);
     // EXPECTED: TEST_LOG_MESSAGE_3
     assertEquals(TEST_LOG_MESSAGE_3, response);
     //
-    args = new String[] {
-        TEST_KEY_4
-    };
-    response = classUnderTest.query(mockChaincodeStub, function, args);
+    response = doQuery(TEST_KEY_4);
     // EXPECTED: TEST_LOG_MESSAGE_4
     assertEquals(TEST_LOG_MESSAGE_4, response);
     //
-    args = new String[] {
-        TEST_KEY_5
-    };
-    response = classUnderTest.query(mockChaincodeStub, function, args);
+    response = doQuery(TEST_KEY_5);
     // EXPECTED: TEST_LOG_MESSAGE_5
     assertEquals(TEST_LOG_MESSAGE_5, response);
   }
@@ -170,7 +168,7 @@ public class ChaincodeLogTest {
     };
     //
     // Invoke init function
-    ret = classUnderTest.run(mockChaincodeStub, AbstractChaincode.FUNCTION_INIT, args);
+    ret = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_INIT, args);
 
     return ret;
   }
@@ -183,6 +181,17 @@ public class ChaincodeLogTest {
     //
     // Invoke init function
     ret = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_LOG, args);
+    return ret;
+  }
+
+  private String doQuery(String logKey) {
+    String ret;
+    String[] args = {
+        logKey
+    };
+    //
+    // Invoke query function
+    ret = classUnderTest.query(mockChaincodeStub, ChaincodeLog.FUNCTION_QUERY, args);
     return ret;
   }
 }

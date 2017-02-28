@@ -32,7 +32,7 @@ public class ChaincodeLog extends AbstractChaincode {
 
   public static final String FUNCTION_LOG = "log";
 
-  public static final String KEY_PREFIX = CONTRACT_ID + "-SC-";
+  public static final String KEY_PREFIX = CONTRACT_ID + "-CLSC-";
 
   /**
    * The driver method. Every chaincode program must have one.
