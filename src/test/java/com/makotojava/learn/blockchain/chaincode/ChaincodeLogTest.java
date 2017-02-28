@@ -89,11 +89,12 @@ public class ChaincodeLogTest {
   @Test
   public void testRun_init() {
     setUpMocks();
-    String logMessage = "This is a test";
+    String logMessage = TEST_LOG_MESSAGE_1;
     String logKey = TEST_KEY_1;
     //
     // do init
-    String response = doInit(logKey, logMessage);
+    String response =
+        classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_INIT, new String[] { logKey, logMessage });
     // EXPECTED: logMessage
     assertEquals(logMessage, response);
   }
@@ -101,36 +102,37 @@ public class ChaincodeLogTest {
   @Test
   public void testRun_log() {
     setUpMocks();
-    String logMessage = "This is a test";
+    String logMessage = TEST_LOG_MESSAGE_1;
     String logKey = TEST_KEY_1;
     //
     // do init
-    String response = doLog(logKey, logMessage);
+    String response =
+        classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_LOG, new String[] { logKey, logMessage });
     // EXPECTED: logMessage
     assertEquals(logMessage, response);
     //
     // do log
     logKey = TEST_KEY_2;
     logMessage = TEST_LOG_MESSAGE_2;
-    response = doLog(logKey, logMessage);
+    response = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_LOG, new String[] { logKey, logMessage });
     // EXPECTED: logMessage
     assertEquals(logMessage, response);
     //
     logKey = TEST_KEY_3;
     logMessage = TEST_LOG_MESSAGE_3;
-    response = doLog(logKey, logMessage);
+    response = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_LOG, new String[] { logKey, logMessage });
     // EXPECTED: logMessage
     assertEquals(logMessage, response);
     //
     logKey = TEST_KEY_4;
     logMessage = TEST_LOG_MESSAGE_4;
-    response = doLog(logKey, logMessage);
+    response = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_LOG, new String[] { logKey, logMessage });
     // EXPECTED: logMessage
     assertEquals(logMessage, response);
     //
     logKey = TEST_KEY_5;
     logMessage = TEST_LOG_MESSAGE_5;
-    response = doLog(logKey, logMessage);
+    response = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_LOG, new String[] { logKey, logMessage });
     // EXPECTED: logMessage
     assertEquals(logMessage, response);
   }
@@ -140,58 +142,23 @@ public class ChaincodeLogTest {
     setUpMocks();
     //
     // Invoke query function
-    String response = doQuery(TEST_KEY_1);
+    String response = classUnderTest.query(mockChaincodeStub, ChaincodeLog.FUNCTION_QUERY, new String[] { TEST_KEY_1 });
     // EXPECTED: TEST_LOG_MESSAGE_1
     assertEquals(TEST_LOG_MESSAGE_1, response);
     //
-    response = doQuery(TEST_KEY_2);
+    response = classUnderTest.query(mockChaincodeStub, ChaincodeLog.FUNCTION_QUERY, new String[] { TEST_KEY_2 });
     // EXPECTED: TEST_LOG_MESSAGE_2
     assertEquals(TEST_LOG_MESSAGE_2, response);
     //
-    response = doQuery(TEST_KEY_3);
+    response = classUnderTest.query(mockChaincodeStub, ChaincodeLog.FUNCTION_QUERY, new String[] { TEST_KEY_3 });
     // EXPECTED: TEST_LOG_MESSAGE_3
     assertEquals(TEST_LOG_MESSAGE_3, response);
     //
-    response = doQuery(TEST_KEY_4);
-    // EXPECTED: TEST_LOG_MESSAGE_4
-    assertEquals(TEST_LOG_MESSAGE_4, response);
-    //
-    response = doQuery(TEST_KEY_5);
-    // EXPECTED: TEST_LOG_MESSAGE_5
-    assertEquals(TEST_LOG_MESSAGE_5, response);
+    // Query supports asking for multiple keys at once. We kind of need to test that.
+    response =
+        classUnderTest.query(mockChaincodeStub, ChaincodeLog.FUNCTION_QUERY, new String[] { TEST_KEY_4, TEST_KEY_5 });
+    // EXPECTED: TEST_LOG_MESSAGE_4 + "," + TEST_LOG_MESSAGE_5
+    assertEquals(TEST_LOG_MESSAGE_4 + "," + TEST_LOG_MESSAGE_5, response);
   }
 
-  private String doInit(String logKey, String logMessage) {
-    String ret;
-    String[] args = {
-        logKey, logMessage
-    };
-    //
-    // Invoke init function
-    ret = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_INIT, args);
-
-    return ret;
-  }
-
-  private String doLog(String logKey, String logMessage) {
-    String ret;
-    String[] args = {
-        logKey, logMessage
-    };
-    //
-    // Invoke init function
-    ret = classUnderTest.run(mockChaincodeStub, ChaincodeLog.FUNCTION_LOG, args);
-    return ret;
-  }
-
-  private String doQuery(String logKey) {
-    String ret;
-    String[] args = {
-        logKey
-    };
-    //
-    // Invoke query function
-    ret = classUnderTest.query(mockChaincodeStub, ChaincodeLog.FUNCTION_QUERY, args);
-    return ret;
-  }
 }
